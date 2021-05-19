@@ -1,5 +1,6 @@
 import math
 import json
+import os
 
 
 def cria_input_cluster_7(n_pixels_x, n_pixels_y, R: 'raio', ptx, frequencia: 'GHz', pixel_size):
@@ -33,5 +34,49 @@ def cria_input_cluster_7(n_pixels_x, n_pixels_y, R: 'raio', ptx, frequencia: 'GH
         json.dump(config, f, indent=4)
 
 
+def cria_planeamento_hexagonal(n_pixels_x, n_pixels_y, R: 'raio em pixels', ptx, frequencia: 'GHz', pixel_size):
+    r = int(math.sqrt(3)/2*R)
+    celulas = {}
+    n_celulas = 0
+
+    x = 0
+    y = 0
+
+    while x <= n_pixels_x:
+        y = 0
+        while y <= n_pixels_y:
+            i = str(n_celulas)
+            celulas[i] = {'posicao': [x, y], 'ptx': ptx, 'frequencia': frequencia}
+            n_celulas += 1
+            y += 2 * r
+        x += 3 * R
+
+    x = 3 * R // 2
+    y = r
+
+    while x <= n_pixels_x:
+        y = r
+        while y <= n_pixels_y:
+            i = str(n_celulas)
+            celulas[i] = {'posicao': [x, y], 'ptx': ptx, 'frequencia': frequencia}
+            n_celulas += 1
+            y += 2 * r
+        x += 3 * R
+
+
+    config = {
+        'celulas': celulas,
+        'n_pixels_x': n_pixels_x,
+        'n_pixels_y': n_pixels_y,
+        'pixel_size': pixel_size,
+    }
+
+    nome_ficheiro = os.path.join('input', f'config-{n_pixels_x}x{n_pixels_y}-r{R}-{n_celulas}cells.json')
+    with open(nome_ficheiro, 'w') as f:
+        json.dump(config, f, indent=4)
+
+
+
 if __name__ == '__main__':
-    cria_input_cluster_7(400, 400, 50, 43, 1.9, 10)
+  #  cria_input_cluster_7(400, 400, 50, 43, 1.9, 10)
+    cria_planeamento_hexagonal(400, 400, 50, 43, 1.9, 10)
