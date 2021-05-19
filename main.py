@@ -17,6 +17,6 @@ def main(nome):
 
 
 if __name__ == '__main__':
-    main('400x400-r100-3cells.json')
+    main('config-400x400-r50-30cells.json')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
