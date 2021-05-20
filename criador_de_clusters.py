@@ -4,6 +4,17 @@ import os
 
 
 def cria_input_cluster_7(n_pixels_x, n_pixels_y, R: 'raio', ptx, frequencia: 'GHz', pixel_size):
+     """
+    Cria um cluster de 7 células centrado numa grelha, inserindo um identificador para cada célula
+    :param n_pixels_x:
+    :param n_pixels_y:
+    :param R:
+    :param ptx:
+    :param frequencia:
+    :param pixel_size:
+    :return:
+    """
+        
     r = int(math.sqrt(3) / 2 * R)
 
     posicao = {}
@@ -35,6 +46,21 @@ def cria_input_cluster_7(n_pixels_x, n_pixels_y, R: 'raio', ptx, frequencia: 'GH
 
 
 def cria_planeamento_hexagonal(n_pixels_x, n_pixels_y, R: 'raio em pixels', ptx, frequencia: 'GHz', pixel_size):
+    """
+    Para uma grelha de pixels e um raio de célula, cria um planeamento hexagonal de células
+    retornando um JSON com coordenadas e configuração de cada célula
+
+    :param n_pixels_x: numero de pixels no eixo dos x
+    :param n_pixels_y: numero de pixels no eixo dos y
+    :param R: Radio em pixels da célula
+    :param ptx: potencia transmitida em dBm
+    :param frequencia: frequencia de transmissão em GHz
+    :param pixel_size: tamanho do pixel em metro
+
+    :return: JSON com coordenadas e configuração de cada célula
+    """
+    
+    
     r = int(math.sqrt(3)/2*R)
     celulas = {}
     n_celulas = 0
