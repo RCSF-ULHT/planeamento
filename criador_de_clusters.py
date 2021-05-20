@@ -3,48 +3,6 @@ import json
 import os
 
 
-def cria_input_cluster_7(n_pixels_x, n_pixels_y, R: 'raio', ptx, frequencia: 'GHz', pixel_size):
-     """
-    Cria um cluster de 7 células centrado numa grelha, inserindo um identificador para cada célula
-    :param n_pixels_x:
-    :param n_pixels_y:
-    :param R:
-    :param ptx:
-    :param frequencia:
-    :param pixel_size:
-    :return:
-    """
-        
-    r = int(math.sqrt(3) / 2 * R)
-
-    posicao = {}
-    centro_x = n_pixels_x // 2
-    centro_y = n_pixels_y // 2
-
-    posicao['1'] = [centro_x, centro_y]
-    posicao['2'] = [centro_x, centro_y + 2 * r]
-    posicao['3'] = [centro_x + R + r // 2, centro_y + r]
-    posicao['4'] = [centro_x + R + r // 2, centro_y - r]
-    posicao['5'] = [centro_x, centro_y - 2 * r]
-    posicao['6'] = [centro_x - R - r // 2, centro_y + r]
-    posicao['7'] = [centro_x - R - r // 2, centro_y - r]
-
-    celulas = {}
-    for i in range(1, 8):
-        i = str(i)
-        celulas[i] = {'posicao': posicao[i], 'ptx': ptx, 'frequencia': frequencia}
-
-    config = {
-        'celulas': celulas,
-        'n_pixels_x': n_pixels_x,
-        'n_pixels_y': n_pixels_y,
-        'pixel_size': pixel_size,
-    }
-
-    with open(f"input\config-{n_pixels_x}x{n_pixels_y}-r{R}-7cells.json", 'w') as f:
-        json.dump(config, f, indent=4)
-
-
 def cria_planeamento_hexagonal(n_pixels_x, n_pixels_y, R: 'raio em pixels', ptx, frequencia: 'GHz', pixel_size):
     """
     Para uma grelha de pixels e um raio de célula, cria um planeamento hexagonal de células
@@ -101,6 +59,47 @@ def cria_planeamento_hexagonal(n_pixels_x, n_pixels_y, R: 'raio em pixels', ptx,
     with open(nome_ficheiro, 'w') as f:
         json.dump(config, f, indent=4)
 
+
+def cria_input_cluster_7(n_pixels_x, n_pixels_y, R: 'raio', ptx, frequencia: 'GHz', pixel_size):
+     """
+    Cria um cluster de 7 células centrado numa grelha, inserindo um identificador para cada célula
+    :param n_pixels_x:
+    :param n_pixels_y:
+    :param R:
+    :param ptx:
+    :param frequencia:
+    :param pixel_size:
+    :return:
+    """
+        
+    r = int(math.sqrt(3) / 2 * R)
+
+    posicao = {}
+    centro_x = n_pixels_x // 2
+    centro_y = n_pixels_y // 2
+
+    posicao['1'] = [centro_x, centro_y]
+    posicao['2'] = [centro_x, centro_y + 2 * r]
+    posicao['3'] = [centro_x + R + r // 2, centro_y + r]
+    posicao['4'] = [centro_x + R + r // 2, centro_y - r]
+    posicao['5'] = [centro_x, centro_y - 2 * r]
+    posicao['6'] = [centro_x - R - r // 2, centro_y + r]
+    posicao['7'] = [centro_x - R - r // 2, centro_y - r]
+
+    celulas = {}
+    for i in range(1, 8):
+        i = str(i)
+        celulas[i] = {'posicao': posicao[i], 'ptx': ptx, 'frequencia': frequencia}
+
+    config = {
+        'celulas': celulas,
+        'n_pixels_x': n_pixels_x,
+        'n_pixels_y': n_pixels_y,
+        'pixel_size': pixel_size,
+    }
+
+    with open(f"input\config-{n_pixels_x}x{n_pixels_y}-r{R}-7cells.json", 'w') as f:
+        json.dump(config, f, indent=4)
 
 
 if __name__ == '__main__':
