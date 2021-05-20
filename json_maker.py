@@ -59,9 +59,11 @@ def cria_planeamento_hexagonal(n_pixels_x, n_pixels_y, R: 'raio em pixels', ptx,
     with open(nome_ficheiro, 'w') as f:
         json.dump(config, f, indent=4)
 
+    return f"config-{n_pixels_x}x{n_pixels_y}-r{R}-{n_celulas}cells.json"
+
 
 def cria_input_cluster_7(n_pixels_x, n_pixels_y, R: 'raio', ptx, frequencia: 'GHz', pixel_size):
-     """
+    """
     Cria um cluster de 7 células centrado numa grelha, inserindo um identificador para cada célula
     :param n_pixels_x:
     :param n_pixels_y:

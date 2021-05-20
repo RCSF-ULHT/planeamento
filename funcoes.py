@@ -65,6 +65,39 @@ def cria_mapa_cobertura(mapa, config):
     return mapa_cobertura
 
 
+def cria_mapa_cir(mapa, config):
+    mapa_cir = [[{} for _ in range(config['n_pixels_y'])] for _ in range(config['n_pixels_x'])]
+
+    cor = {}
+    for i, item in enumerate(list(config['celulas'])):
+        cor[item] = i
+
+    for y in range(0, config['n_pixels_y']):
+        for x in range(0, config['n_pixels_x']):
+            p = mapa[x][y]
+            mapa_cir[x][y] = cir(p)
+
+    return mapa_cir
+
+
+def cir(p):
+    """
+    calcula CIR para dicionario de prx de celulas num ponto. considera C o melhor dos sinais.
+    """
+    try:
+        c = max(list(p.items()), key=lambda e: e[1])
+
+        i = 0
+        for cell,prx in p.items():
+            if prx > 0:
+                i += 10*math.log10(prx)
+
+        i -= 10*math.log10(c[1])
+    except:
+        print(f"Erro: {c[1]}")
+        
+    return 10**(c/i/10)
+
 def extrai_mapa(mapa, celula):
     mapa_celula = []
     for linha in mapa:
