@@ -77,6 +77,7 @@ def extrai_mapa(mapa, celula):
 
 
 def desenha_mapa(mapa, nome, tipo):
+    plt.clf()
     ax = sns.heatmap(mapa)
     caminho = os.path.join('output', f'{nome[:-5]}-{tipo}.png')
     plt.savefig(caminho)
