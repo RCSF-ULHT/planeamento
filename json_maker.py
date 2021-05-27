@@ -55,11 +55,11 @@ def cria_planeamento_hexagonal(n_pixels_x, n_pixels_y, R: 'raio em pixels', ptx,
         'pixel_size': pixel_size,
     }
 
-    nome_ficheiro = os.path.join('input', f'config-{n_pixels_x}x{n_pixels_y}-r{R}-{n_celulas}cells.json')
-    with open(nome_ficheiro, 'w') as f:
+    nome_ficheiro = f'{n_pixels_x}x{n_pixels_y}-r{R}-{pixel_size}m-{ptx}dBm-{frequencia}GHz-{n_celulas}cells.json'
+    with open(os.path.join('input', nome_ficheiro), 'w') as f:
         json.dump(config, f, indent=4)
 
-    return f"config-{n_pixels_x}x{n_pixels_y}-r{R}-{n_celulas}cells.json"
+    return nome_ficheiro
 
 
 def cria_input_cluster_7(n_pixels_x, n_pixels_y, R: 'raio', ptx, frequencia: 'GHz', pixel_size):
@@ -100,10 +100,33 @@ def cria_input_cluster_7(n_pixels_x, n_pixels_y, R: 'raio', ptx, frequencia: 'GH
         'pixel_size': pixel_size,
     }
 
-    with open(f"input\config-{n_pixels_x}x{n_pixels_y}-r{R}-7cells.json", 'w') as f:
+    with open(f"input\{n_pixels_x}x{n_pixels_y}-r{R}-7cells.json", 'w') as f:
+        json.dump(config, f, indent=4)
+
+
+    nome_ficheiro = f'{n_pixels_x}x{n_pixels_y}-r{R}-{pixel_size}m-{ptx}dBm-{frequencia}GHz-7cells.json'
+    with open(os.path.join('input', nome_ficheiro), 'w') as f:
         json.dump(config, f, indent=4)
 
 
 if __name__ == '__main__':
-  #  cria_input_cluster_7(400, 400, 50, 43, 1.9, 10)
-    cria_planeamento_hexagonal(400, 400, 50, 43, 1.9, 10)
+    
+    cria_planeamento_hexagonal(400, 400, 50, 20, 1.9, 10)
+    """
+    cria_planeamento_hexagonal(n_pixels_x, n_pixels_y, R: 'raio em pixels', ptx, frequencia: 'GHz', pixel_size):
+    
+    Para uma grelha de pixels e um raio de célula, cria um planeamento hexagonal de células
+    retornando um JSON com coordenadas e configuração de cada célula
+
+    :param n_pixels_x: numero de pixels no eixo dos x
+    :param n_pixels_y: numero de pixels no eixo dos y
+    :param R: Radio em pixels da célula
+    :param ptx: potencia transmitida em dBm
+    :param frequencia: frequencia de transmissão em GHz
+    :param pixel_size: tamanho do pixel em metro
+
+    :return: JSON com coordenadas e configuração de cada célula
+    """
+ 
+
+    cria_input_cluster_7(400, 400, 50, 43, 1.9, 10)

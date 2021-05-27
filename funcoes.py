@@ -1,4 +1,5 @@
 import math
+from math import log10
 from matplotlib import pyplot as plt
 import os
 import seaborn as sns
@@ -6,7 +7,7 @@ import seaborn as sns
 sns.set()
 
 
-def cria_mapa_vazia(size_x, size_y):
+def cria_mapa_vazio(size_x, size_y):
     return [[{} for _ in range(size_y)] for _ in range(size_x)]
 
 
@@ -29,10 +30,10 @@ def free_space(f: "frequencia [GHz]", d: "distancia [m]") -> "atenuação [dB]":
     return 32.44 + 20 * math.log10(d / 1000) + 20 * math.log10(f * 1000)
 
 
-def cria_mapa(config):
-    """Cria mapa de potencia recebida de um conjunto de celulas"""
+def cria_mapa_prx_dB_de_celulas(config):
+    """Cria mapa de potencia recebida em dB de um conjunto de celulas"""
 
-    mapa = cria_mapa_vazia(config['n_pixels_x'], config['n_pixels_y'])
+    mapa = cria_mapa_vazio(config['n_pixels_x'], config['n_pixels_y'])
 
     for y in range(0, config['n_pixels_y']):
         for x in range(0, config['n_pixels_x']):
@@ -49,7 +50,7 @@ def cria_mapa(config):
     return mapa
 
 
-def cria_mapa_cobertura(mapa, config):
+def cria_mapa_id_best_server(mapa, config):
     mapa_cobertura = [[{} for _ in range(config['n_pixels_y'])] for _ in range(config['n_pixels_x'])]
 
     cor = {}
@@ -66,37 +67,35 @@ def cria_mapa_cobertura(mapa, config):
 
 
 def cria_mapa_cir(mapa, config):
-    mapa_cir = [[{} for _ in range(config['n_pixels_y'])] for _ in range(config['n_pixels_x'])]
-
-    cor = {}
-    for i, item in enumerate(list(config['celulas'])):
-        cor[item] = i
+    mapa_cir = [[None for _ in range(config['n_pixels_y'])] for _ in range(config['n_pixels_x'])]
 
     for y in range(0, config['n_pixels_y']):
         for x in range(0, config['n_pixels_x']):
-            p = mapa[x][y]
-            mapa_cir[x][y] = cir(p)
+            mapa_cir[x][y] = cir(mapa[x][y])
 
     return mapa_cir
 
 
 def cir(p):
     """
-    calcula CIR para dicionario de prx de celulas num ponto. considera C o melhor dos sinais.
+    calcula CIR de dicionario de prx[dBm] de celulas num ponto. considera C o melhor dos sinais.
     """
-    try:
-        c = max(list(p.items()), key=lambda e: e[1])
 
-        i = 0
-        for cell,prx in p.items():
-            if prx > 0:
-                i += 10*math.log10(prx)
+    lista_prx_dB_cells = list(p.values())
+    lista_prx_dB_cells.sort(reverse=True)
+    
+    c_dB = lista_prx_dB_cells[0]  # best server signal strength
+    lista_prx_dB_i_cells = lista_prx_dB_cells[1:]    # remaining received power levels
+    
+    soma_i_linear = 0
+    for prx_dB_i_cell in lista_prx_dB_i_cells:
+        soma_i_linear += 10**(prx_dB_i_cell/10)  # soma linear de px das celulas interferences
+    soma_i_dB = 10*log10(soma_i_linear)
 
-        i -= 10*math.log10(c[1])
-    except:
-        print(f"Erro: {c[1]}")
-        
-    return 10**(c/i/10)
+    cir_dB = c_dB - soma_i_dB
+     
+    return cir_dB
+
 
 def extrai_mapa(mapa, celula):
     mapa_celula = []
